@@ -1,0 +1,35 @@
+# kind: "CDN"
+# version: "1"
+# metadata:
+#   envTypes: ["dev", "stage", "prod"]
+# data:
+#   requestTransformations:
+#     rules:
+#       - name: unset-all-query-params
+#         when: { reqProperty: tier, equals: "publish" }
+#         actions:
+#         - type: unset
+#           queryParamMatch: ^(?!param1$|param2$).*$
+#   redirects:
+#     rules:
+#     - name: "redirect-explore-page"
+#       when: { reqProperty: path, equals: "/us/en/explore.html" }
+#       action:
+#         type: redirect
+#         status: 301
+#         location: /us/en/adventures.html
+#   originSelectors:
+#     origins:
+#     - name: aem-live
+#       domain: main--lesson3--s25l340.aem.page
+#     rules:
+#     - name: select-edge-delivery-services-origin
+#       when:
+#         allOf:
+#         - reqProperty: tier
+#           equals: publish
+#         - reqProperty: path
+#           matches: "^(/blog|/scripts/.*|/styles/.*|/fonts/.*|/blocks/.*|/icons/.*|.*/media_.*|/favicon.ico)"
+#       action:
+#         type: selectOrigin
+#         originName: aem-live
